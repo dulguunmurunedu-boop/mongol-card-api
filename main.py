@@ -3,7 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
 
-# FlutterFlow-оос дуудагдахын тулд CORS нээж өгнө
+# FlutterFlow-oос дуудагдах тул CORS нээж өгнө
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -18,13 +18,59 @@ def root():
 
 @app.post("/recognize-card")
 async def recognize_card(image: UploadFile = File(...)):
-    # Түр test response
+    filename = image.filename.lower()
+
+    # Түр demo/test match
+    if "temujin" in filename or "hiad" in filename:
+        return {
+            "success": True,
+            "ocrText": "Тэмүжин Хиад",
+            "imageCandidateId": "HD-001",
+            "ocrCandidateId": "HD-001",
+            "finalMatchedId": "HD-001",
+            "confidence": 0.95,
+            "reason": "filename_match"
+        }
+
+    elif "naiman" in filename:
+        return {
+            "success": True,
+            "ocrText": "Найман",
+            "imageCandidateId": "NM-001",
+            "ocrCandidateId": "NM-001",
+            "finalMatchedId": "NM-001",
+            "confidence": 0.95,
+            "reason": "filename_match"
+        }
+
+    elif "mergid" in filename or "tohtoa" in filename:
+        return {
+            "success": True,
+            "ocrText": "Тохтоа бэхи Мэргид",
+            "imageCandidateId": "MR-001",
+            "ocrCandidateId": "MR-001",
+            "finalMatchedId": "MR-001",
+            "confidence": 0.95,
+            "reason": "filename_match"
+        }
+
+    elif "kereid" in filename or "wang" in filename:
+        return {
+            "success": True,
+            "ocrText": "Ван хан Хэрэйд",
+            "imageCandidateId": "KR-001",
+            "ocrCandidateId": "KR-001",
+            "finalMatchedId": "KR-001",
+            "confidence": 0.95,
+            "reason": "filename_match"
+        }
+
     return {
-        "success": True,
-        "ocrText": "тохтоа бэхи мэргид",
-        "imageCandidateId": "MR-001",
-        "ocrCandidateId": "MR-001",
-        "finalMatchedId": "MR-001",
-        "confidence": 0.93,
-        "reason": "image_ocr_agree"
+        "success": False,
+        "ocrText": "Танигдсангүй",
+        "imageCandidateId": None,
+        "ocrCandidateId": None,
+        "finalMatchedId": None,
+        "confidence": 0.0,
+        "reason": "no_match"
     }
